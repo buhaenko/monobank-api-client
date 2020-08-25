@@ -164,13 +164,16 @@ class MonobankCorporateApi extends MonobankBaseApi {
     );
   }
 
+  async getWebhooksList() {
+    return super.getWebhooksList(this._getAuthHeaders({endpoint: Endpoint.WEBHOOKS_LIST }));
+  }
   /**
    * @param {string} requestId
    * @param {string} endpoint
    * @return {{"X-Request-Id": *, "X-Sign": string, "X-Time": string}}
    * @private
    */
-  _getAuthHeaders({ requestId, endpoint }) {
+  _getAuthHeaders({ requestId = '', endpoint }) {
     const time = Math.floor(new Date().getTime() / 1000) + '';
 
     return {
