@@ -193,6 +193,10 @@ class MonobankBaseApi {
 
     return this._client;
   }
+
+  /**
+   * @param {{'X-Request-Id': *, 'X-Sign': string, 'X-Time': string}} headers
+   */
   async getWebhooksList(headers = {}) {
    try{
      const { data } = await this._callEndpoint({
