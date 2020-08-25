@@ -233,6 +233,43 @@ class MonobankBaseApi {
   }
 
   /**
+   *
+   * @param url
+   * @param endpoint
+   * @returns {Promise<boolean>}
+   */
+  async setupWebHook({ url, endpoint }) {
+    try {
+      const data = await this._callEndpoint({
+        method: 'POST',
+        endpoint: endpoint,
+        body: {
+          webHookUrl: url,
+        },
+      });
+      console.log(data);
+      return data;
+    } catch (err) {
+      if (err.isAxiosError) {
+        const { status, data } = err.response;
+
+        switch (status) {
+          case TOO_MANY_REQUESTS:
+            throw new TooManyRequestsError(data.errorDescription || 'Too many requests');
+          case UNAUTHORIZED:
+            throw new UnauthorizedRequestError(data.errorDescription || 'Invalid request');
+          case BAD_REQUEST:
+            throw new InvalidRequestParamsError(data.errorDescription || 'Unauthorized request');
+          default:
+            throw new UndefinedApiError(data.errorDescription || 'Unclassified API error');
+        }
+      }
+
+      throw new UndefinedApiError('Something went wrong');
+    }
+  }
+
+  /**
    * @param {string} account
    * @param {Date} from
    * @param {Date} to
