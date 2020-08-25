@@ -350,11 +350,11 @@ class MonobankBaseApi {
    */
   async setupWebHook(headers, { url, endpoint }) {
     try {
-      const data = await this._callEndpoint({
+      const { data } = await this._callEndpoint({
         method: 'POST',
         endpoint,
         headers,
-        data: {
+        body: {
           webHookUrl: url,
         },
       });
