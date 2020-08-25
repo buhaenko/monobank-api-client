@@ -164,6 +164,9 @@ class MonobankCorporateApi extends MonobankBaseApi {
     );
   }
 
+  async getWebhooksList() {
+    return super.getWebhooksList(this._getAuthHeaders({endpoint: Endpoint.WEBHOOKS_LIST }));
+  }
   /**
    *
    * @returns {Promise<void>}
