@@ -195,6 +195,83 @@ class MonobankBaseApi {
   }
 
   /**
+   * @param {{'X-Request-Id': *, 'X-Sign': string, 'X-Time': string}} headers
+   */
+  async getWebhooksList(headers = {}) {
+   try{
+     const { data } = await this._callEndpoint({
+       method: 'GET',
+       headers,
+       endpoint: Endpoint.WEBHOOKS_LIST,
+     });
+     console.log(data);
+   }
+   catch (err) {
+     if (err.isAxiosError) {
+       const { status, data } = err.response;
+
+       switch (status) {
+         case TOO_MANY_REQUESTS:
+           throw new TooManyRequestsError(data.errorDescription || 'Too many requests');
+         case UNAUTHORIZED:
+           throw new UnauthorizedRequestError(data.errorDescription || 'Unauthorized request');
+         case BAD_REQUEST:
+           throw new InvalidRequestParamsError(data.errorDescription || 'Invalid request');
+         case FORBIDDEN:
+           throw new AccessForbiddenError(data.errorDescription || 'Access forbidden');
+         case NOT_FOUND:
+           throw new NotFoundError(data.errorDescription || 'RequestId not found');
+         default:
+           throw new UndefinedApiError(data.errorDescription || 'Unclassified API error');
+       }
+     }
+
+     console.log(err);
+
+     throw new UndefinedApiError('Something went wrong');
+   }
+  }
+
+  /**
+   *
+   * @param headers
+   * @param url
+   * @param endpoint
+   * @returns {Promise<boolean>}
+   */
+  async setupWebHook(headers, { url, endpoint }) {
+    try {
+      const data = await this._callEndpoint({
+        method: 'POST',
+        endpoint,
+        headers,
+        body: {
+          webHookUrl: url,
+        },
+      });
+      console.log(data);
+      return data;
+    } catch (err) {
+      if (err.isAxiosError) {
+        const { status, data } = err.response;
+
+        switch (status) {
+          case TOO_MANY_REQUESTS:
+            throw new TooManyRequestsError(data.errorDescription || 'Too many requests');
+          case UNAUTHORIZED:
+            throw new UnauthorizedRequestError(data.errorDescription || 'Invalid request');
+          case BAD_REQUEST:
+            throw new InvalidRequestParamsError(data.errorDescription || 'Unauthorized request');
+          default:
+            throw new UndefinedApiError(data.errorDescription || 'Unclassified API error');
+        }
+      }
+
+      throw new UndefinedApiError('Something went wrong');
+    }
+  }
+
+  /**
    * @param {string} account
    * @param {Date} from
    * @param {Date} to

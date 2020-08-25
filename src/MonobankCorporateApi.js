@@ -165,12 +165,27 @@ class MonobankCorporateApi extends MonobankBaseApi {
   }
 
   /**
+   *
+   * @returns {Promise<void>}
+   */
+  async getWebhooksList() {
+    return super.getWebhooksList(this._getAuthHeaders({endpoint: Endpoint.WEBHOOKS_LIST }));
+  }
+
+  /**
+   *
+   * @returns {Promise<boolean>}
+   */
+  async setupWebhook({url}) {
+    return super.setupWebHook(this._getAuthHeaders({endpoint: Endpoint.SETUP_CORP_WEBHOOK }), {url, endpoint: Endpoint.SETUP_CORP_WEBHOOK})
+  }
+  /**
    * @param {string} requestId
    * @param {string} endpoint
    * @return {{"X-Request-Id": *, "X-Sign": string, "X-Time": string}}
    * @private
    */
-  _getAuthHeaders({ requestId, endpoint }) {
+  _getAuthHeaders({ requestId = '', endpoint }) {
     const time = Math.floor(new Date().getTime() / 1000) + '';
 
     return {
