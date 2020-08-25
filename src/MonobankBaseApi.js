@@ -354,7 +354,7 @@ class MonobankBaseApi {
         method: 'POST',
         endpoint,
         headers,
-        body: {
+        data: {
           webHookUrl: url,
         },
       });
