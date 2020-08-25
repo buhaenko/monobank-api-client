@@ -193,6 +193,40 @@ class MonobankBaseApi {
 
     return this._client;
   }
+  async getWebhooksList(headers = {}) {
+   try{
+     const { data } = await this._callEndpoint({
+       method: 'GET',
+       headers,
+       endpoint: Endpoint.WEBHOOKS_LIST,
+     });
+     console.log(data);
+   }
+   catch (err) {
+     if (err.isAxiosError) {
+       const { status, data } = err.response;
+
+       switch (status) {
+         case TOO_MANY_REQUESTS:
+           throw new TooManyRequestsError(data.errorDescription || 'Too many requests');
+         case UNAUTHORIZED:
+           throw new UnauthorizedRequestError(data.errorDescription || 'Unauthorized request');
+         case BAD_REQUEST:
+           throw new InvalidRequestParamsError(data.errorDescription || 'Invalid request');
+         case FORBIDDEN:
+           throw new AccessForbiddenError(data.errorDescription || 'Access forbidden');
+         case NOT_FOUND:
+           throw new NotFoundError(data.errorDescription || 'RequestId not found');
+         default:
+           throw new UndefinedApiError(data.errorDescription || 'Unclassified API error');
+       }
+     }
+
+     console.log(err);
+
+     throw new UndefinedApiError('Something went wrong');
+   }
+  }
 
   /**
    * @param {string} account

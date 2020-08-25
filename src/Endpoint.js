@@ -6,4 +6,5 @@ module.exports = {
   ACCOUNT_STATEMENT: '/personal/statement/{account}/{from}/{to}',
   PERSONAL_AUTH_REQUEST: '/personal/auth/request',
   SETUP_WEBHOOK: '/personal/webhook',
+  WEBHOOKS_LIST: '/personal/corp/settings',
 };
