@@ -177,7 +177,7 @@ class MonobankCorporateApi extends MonobankBaseApi {
    * @returns {Promise<boolean>}
    */
   async setupWebhook({url}) {
-    return super.setupWebHook(this._getAuthHeaders({endpoint: Endpoint.SETUP_CORP_WEBHOOK }), {url, endpoint: Endpoint.SETUP_CORP_WEBHOOK})
+    return super.setupWebhook(this._getAuthHeaders({endpoint: Endpoint.SETUP_CORP_WEBHOOK }), {url, endpoint: Endpoint.SETUP_CORP_WEBHOOK})
   }
   /**
    * @param {string} requestId
