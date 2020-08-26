@@ -313,7 +313,7 @@ class MonobankBaseApi {
        headers,
        endpoint: Endpoint.WEBHOOKS_LIST,
      });
-     console.log(data);
+     return data.webhook;
    }
    catch (err) {
      if (err.isAxiosError) {
@@ -348,7 +348,7 @@ class MonobankBaseApi {
    * @param endpoint
    * @returns {Promise<boolean>}
    */
-  async setupWebHook(headers, { url, endpoint }) {
+  async setupWebhook(headers, { url, endpoint }) {
     try {
       const { data } = await this._callEndpoint({
         method: 'POST',
