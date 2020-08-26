@@ -289,10 +289,11 @@ class MonobankBaseApi {
    * @param {string} endpoint
    * @param {object} headers
    * @param {object} body
+   * @param {object} data
    * @returns {Promise<AxiosResponse<T>>}
    * @private
    */
-  _callEndpoint({ method, endpoint, headers, body }) {
+  _callEndpoint({ method, endpoint, headers, body, data }) {
     return this.getClient().request({
       method,
       url: endpoint,
